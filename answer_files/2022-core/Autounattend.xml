@@ -147,6 +147,11 @@
           <RequiresUserInput>true</RequiresUserInput>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
+          <CommandLine>cmd.exe /c a:\71-install-build-tools.bat</CommandLine>
+          <Order>10</Order>
+          <Description>Install Rust/Tauri/Dioxus/Gitea runner build toolchain</Description>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
           <!-- Final step - turn on winrm and let packer do the rest -->
           <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\50-enable-winrm.ps1</CommandLine>
           <Order>100</Order>

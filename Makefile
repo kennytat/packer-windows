@@ -76,33 +76,33 @@ all: win10 win11 win2019 win2022 win2019_core win2022_core
 .PHONY: all
 
 clean:
->rm -rf output-*
+>rm -rf output/*
 .PHONY: clean
 
-win10: output-windows_10/packer-win10_22h2
+win10: output/windows_10/packer-win10_22h2
 .PHONY: win10
-win11: output-windows_11/packer-win11_23h2
+win11: output/windows_11/packer-win11_23h2
 .PHONY: win11
-win2019: output-windows_2019/packer-win2019
+win2019: output/windows_2019/packer-win2019
 .PHONY: win2019
-win2022: output-windows_2022/packer-win2022
+win2022: output/windows_2022/packer-win2022
 .PHONY: win2022
-win2019_core: output-windows_2019_core/packer-win2019
+win2019_core: output/windows_2019_core/packer-win2019
 .PHONY: win2019_core
-win2022_core: output-windows_2022_core/packer-win2022
+win2022_core: output/windows_2022_core/packer-win2022
 .PHONY: win2022_core
 
-output-windows_10/packer-win10_22h2:
+output/windows_10/packer-win10_22h2:
 >packer build -var=headless=$(HEADLESS) win10_22h2.pkr.hcl
-output-windows_11/packer-win11_23h2:
+output/windows_11/packer-win11_23h2:
 >packer build -var=headless=$(HEADLESS) win11_23h2.pkr.hcl
-output-windows_2019/packer-win2019:
+output/windows_2019/packer-win2019:
 >packer build -var=headless=$(HEADLESS) win2019.pkr.hcl
-output-windows_2022/packer-win2022:
+output/windows_2022/packer-win2022:
 >packer build -var=headless=$(HEADLESS) win2022.pkr.hcl
-output-windows_2019_core/packer-win2019:
+output/windows_2019_core/packer-win2019:
 >packer build -var=headless=$(HEADLESS) -var=vm_name=windows_2019_core -var=autounattend=answer_files/2019-core/Autounattend.xml win2019.pkr.hcl
-output-windows_2022_core/packer-win2022:
+output/windows_2022_core/packer-win2022:
 >packer build -var=headless=$(HEADLESS) -var=vm_name=windows_2022_core -var=autounattend=answer_files/2022-core/Autounattend.xml win2022.pkr.hcl
 
 # Handlers for launching images
@@ -112,22 +112,22 @@ output-windows_2022_core/packer-win2022:
 # to sysprep when you try to use it.
 # Keep this in mind!
 launch_win10: win10
->@$(call launch_qemu,"output-windows_10/packer-win10_22h2","/tmp/win10")
+>@$(call launch_qemu,"output/windows_10/packer-win10_22h2","/tmp/win10")
 .PHONY: launch_win10
 launch_win11: win11
->@$(call launch_qemu,"output-windows_11/packer-win11_23h2","/tmp/win11")
+>@$(call launch_qemu,"output/windows_11/packer-win11_23h2","/tmp/win11")
 .PHONY: launch_win11
 launch_win2019: win2019
->@$(call launch_qemu,"output-windows_2019/packer-win2019","/tmp/win2019")
+>@$(call launch_qemu,"output/windows_2019/packer-win2019","/tmp/win2019")
 .PHONY: launch_win2019
 launch_win2022: win2022
->@$(call launch_qemu,"output-windows_2022/packer-win2022","/tmp/win2022")
+>@$(call launch_qemu,"output/windows_2022/packer-win2022","/tmp/win2022")
 .PHONY: launch_win2022
 launch_win2019_core: win2019_core
->@$(call launch_qemu,"output-windows_2019_core/packer-win2019","/tmp/win2019_core")
+>@$(call launch_qemu,"output/windows_2019_core/packer-win2019","/tmp/win2019_core")
 .PHONY: launch_win2019_core
 launch_win2022_core: win2022_core
->@$(call launch_qemu,"output-windows_2022_core/packer-win2022","/tmp/win2022_core")
+>@$(call launch_qemu,"output/windows_2022_core/packer-win2022","/tmp/win2022_core")
 .PHONY: launch_win2022_core
 
 # Ensure the guest agent responds

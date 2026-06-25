@@ -57,6 +57,11 @@ variable "shutdown_command" {
   default = "%WINDIR%/system32/sysprep/sysprep.exe /generalize /oobe /shutdown /unattend:C:/Windows/Temp/Autounattend.xml"
 }
 
+variable "output_directory" {
+  type    = string
+  default = "output"
+}
+
 variable "vm_name" {
   type    = string
   default = "windows_10"
@@ -84,7 +89,7 @@ source "qemu" "win10_22h2" {
   winrm_timeout    = "30m"
   winrm_use_ssl    = "true"
   winrm_username   = "vagrant"
-  output_directory = "output-${var.vm_name}"
+  output_directory = "${var.output_directory}/${var.vm_name}"
 }
 
 build {

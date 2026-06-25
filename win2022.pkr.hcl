@@ -37,6 +37,11 @@ variable "headless" {
   default = "true"
 }
 
+variable "install_build_tool" {
+  type    = bool
+  default = false
+}
+
 variable "iso_checksum" {
   type    = string
   default = "sha256:3e4fa6d8507b554856fc9ca6079cc402df11a8b79344871669f0251535255325"
@@ -57,6 +62,11 @@ variable "shutdown_command" {
   default = "%WINDIR%/system32/sysprep/sysprep.exe /generalize /oobe /shutdown /unattend:C:/Windows/Temp/Autounattend.xml"
 }
 
+variable "output_directory" {
+  type    = string
+  default = "output"
+}
+
 variable "vm_name" {
   type    = string
   default = "windows_2022"
@@ -70,7 +80,7 @@ source "qemu" "win2022" {
   disk_compression = "true"
   disk_interface   = "virtio"
   disk_size        = "${var.disk_size}"
-  floppy_files     = ["${var.autounattend}", "./scripts/0-firstlogin.bat", "./scripts/1-fixnetwork.ps1", "./scripts/70-install-misc.bat", "./scripts/50-enable-winrm.ps1", "./answer_files/Firstboot/Firstboot-Autounattend.xml", "./drivers/"]
+  floppy_files     = ["${var.autounattend}", "./scripts/0-firstlogin.bat", "./scripts/1-fixnetwork.ps1", "./scripts/70-install-misc.bat", "./scripts/71-install-build-tools.bat", "./scripts/50-enable-winrm.ps1", "./answer_files/Firstboot/Firstboot-Autounattend.xml", "./drivers/"]
   format           = "qcow2"
   headless         = "${var.headless}"
   iso_checksum     = "${var.iso_checksum}"
@@ -84,7 +94,7 @@ source "qemu" "win2022" {
   winrm_timeout    = "30m"
   winrm_use_ssl    = "true"
   winrm_username   = "vagrant"
-  output_directory = "output-${var.vm_name}"
+  output_directory = "${var.output_directory}/${var.vm_name}"
 }
 
 build {
@@ -93,6 +103,16 @@ build {
     execute_command = "{{ .Vars }} cmd /c C:/Windows/Temp/script.bat"
     remote_path     = "c:/Windows/Temp/script.bat"
     scripts         = ["./scripts/70-install-misc.bat", "./scripts/80-compile-dotnet-assemblies.bat"]
+  }
+
+  dynamic "provisioner" {
+    for_each = var.install_build_tool ? [1] : []
+    labels   = ["windows-shell"]
+    content {
+      execute_command = "{{ .Vars }} cmd /c C:/Windows/Temp/script.bat"
+      remote_path     = "c:/Windows/Temp/script.bat"
+      scripts         = ["./scripts/71-install-build-tools.bat"]
+    }
   }
 
   # Reboot after doing our first stages
