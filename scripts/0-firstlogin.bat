@@ -8,6 +8,9 @@ REM Copy our sysprep Autounattend for our post-packer first boot
 copy "A:/Firstboot-Autounattend.xml" "C:/Windows/Temp/Autounattend.xml"
 REM Copy the enable-winrm script, relied on by our post-packer autounattend script
 copy "A:/50-enable-winrm.ps1" "C:/Windows/Temp/enable-winrm.ps1"
+REM Persist evaluation trial extension script across sysprep
+if not exist "C:\ProgramData\PackerWindows" mkdir "C:\ProgramData\PackerWindows"
+copy /Y "A:\72-extend-evaluation-trial.ps1" "C:\ProgramData\PackerWindows\extend-evaluation-trial.ps1"
 
 REM Set PowerShell Execution Policy 64 Bit
 powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force"

@@ -75,7 +75,7 @@ source "qemu" "win10_22h2" {
   disk_compression = "true"
   disk_interface   = "virtio"
   disk_size        = "${var.disk_size}"
-  floppy_files     = ["${var.autounattend}", "./scripts/0-firstlogin.bat", "./scripts/1-fixnetwork.ps1", "./scripts/70-install-misc.bat", "./scripts/50-enable-winrm.ps1", "./answer_files/Firstboot/Firstboot-Autounattend.xml", "./drivers/"]
+  floppy_files     = ["${var.autounattend}", "./scripts/0-firstlogin.bat", "./scripts/1-fixnetwork.ps1", "./scripts/70-install-misc.bat", "./scripts/72-extend-evaluation-trial.ps1", "./scripts/50-enable-winrm.ps1", "./answer_files/Firstboot/Firstboot-Autounattend.xml", "./drivers/"]
   format           = "qcow2"
   headless         = "${var.headless}"
   iso_checksum     = "${var.iso_checksum}"

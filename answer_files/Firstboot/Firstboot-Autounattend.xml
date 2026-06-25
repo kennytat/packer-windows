@@ -29,6 +29,11 @@
           <Order>10</Order>
         </RunSynchronousCommand>
         <RunSynchronousCommand wcm:action="add">
+          <Description>Register automatic evaluation trial extension</Description>
+          <Path>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/ProgramData/PackerWindows/extend-evaluation-trial.ps1 -Install</Path>
+          <Order>15</Order>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add">
           <!-- Delete a temporary file used to track sysprep status-->
           <!-- After this file is deleted, other provisioning systems can ensure the -->
           <!-- machine is post-sysprepped and is ready to go -->
