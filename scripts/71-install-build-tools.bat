@@ -7,6 +7,15 @@ if exist C:\build-tools-installed exit /b 0
 echo %~f0 | findstr /I "Windows\\Temp" >nul
 if errorlevel 1 exit /b 0
 
+REM WinRM cmd sessions may not inherit Chocolatey on PATH (installed during OOBE).
+set "ChocolateyInstall=C:\ProgramData\chocolatey"
+set "PATH=%ChocolateyInstall%\bin;%PATH%"
+where choco >nul 2>&1
+if errorlevel 1 (
+  powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+  set "PATH=%ChocolateyInstall%\bin;%PATH%"
+)
+
 REM MSVC linker + Windows SDK (required for Rust on Windows)
 choco install visualstudio2022buildtools -y --package-parameters "--passive --norestart"
 choco install visualstudio2022-workload-vctools -y --package-parameters "--includeRecommended --passive --norestart"
